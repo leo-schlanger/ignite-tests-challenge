@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { OperationType } from '../../entities/Statement';
 
 import { CreateStatementUseCase } from './CreateStatementUseCase';
-
-enum OperationType {
-  DEPOSIT = 'deposit',
-  WITHDRAW = 'withdraw',
-}
 
 export class CreateStatementController {
   async execute(request: Request, response: Response) {
@@ -18,12 +14,34 @@ export class CreateStatementController {
 
     const createStatement = container.resolve(CreateStatementUseCase);
 
-    const statement = await createStatement.execute({
-      user_id,
-      type,
-      amount,
-      description
-    });
+    let statement;
+
+    if(type === OperationType.TRANSFER) {
+      const { user_id: received_id } = request.params;
+
+      await createStatement.execute({
+        user_id: received_id,
+        sender_id: user_id,
+        type,
+        amount,
+        description
+      });
+
+       statement = await createStatement.execute({
+        user_id,
+        sender_id: user_id,
+        type,
+        amount,
+        description
+      });
+    } else {
+      statement = await createStatement.execute({
+        user_id,
+        type,
+        amount,
+        description
+      });
+    }
 
     return response.status(201).json(statement);
   }

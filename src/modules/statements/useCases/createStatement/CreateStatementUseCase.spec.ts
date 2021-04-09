@@ -19,7 +19,7 @@ describe("Create Statement", () => {
     );
   });
 
-  it("should be able to create an user", async () => {
+  it("should be able to create an statement", async () => {
     const user = await inMemoryUsersRepository.create({
       email: "user@example.com",
       password: "1234",
