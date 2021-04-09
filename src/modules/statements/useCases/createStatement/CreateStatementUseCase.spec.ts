@@ -39,15 +39,14 @@ describe("Create Statement", () => {
   });
 
   it("should not be able to create a statement with a non-exists user", async () => {
-    expect(async () => {
-      const statement: ICreateStatementDTO = {
-        user_id: "invalid_user",
-        description: "freela",
-        amount: 4555,
-        type: OperationType.DEPOSIT,
-      };
+    const statement: ICreateStatementDTO = {
+      user_id: "invalid_user",
+      description: "freela",
+      amount: 4555,
+      type: OperationType.DEPOSIT,
+    };
 
-      const result = await createStatementUseCase.execute(statement);
-    }).rejects.toBeInstanceOf(CreateStatementError);
+    await expect( createStatementUseCase.execute(statement))
+      .rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 });

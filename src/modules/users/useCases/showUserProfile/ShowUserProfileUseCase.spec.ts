@@ -23,9 +23,9 @@ describe("Show User", () => {
     expect(result.id).toBe(user.id);
   });
 
-  it("should not be able to show a non-existing user", async () => {
-    expect(async () => {
-      await showUserProfileUseCase.execute("non-existing-user");
-    }).rejects.toBeInstanceOf(ShowUserProfileError);
+  it("should not be able to show a profile with non-existing user", async () => {
+    await expect(
+      showUserProfileUseCase.execute("non-existing-user"))
+      .rejects.toBeInstanceOf(ShowUserProfileError);
   });
 });

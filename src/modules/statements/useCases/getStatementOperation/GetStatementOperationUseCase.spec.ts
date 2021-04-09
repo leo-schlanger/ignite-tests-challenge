@@ -43,26 +43,22 @@ describe("Get Statement Operation", () => {
   });
 
   it("should not be able to get a statement operation with a non-exists user", async () => {
-    expect(async () => {
-      await getStatementOperationUseCase.execute({
+    await expect(getStatementOperationUseCase.execute({
         user_id: "non-exists-user",
         statement_id: "statement",
-      });
-    }).rejects.toBeInstanceOf(GetStatementOperationError);
+      })).rejects.toBeInstanceOf(GetStatementOperationError.UserNotFound);
   });
 
   it("should not be able to get a statement operation with a non-exists statement", async () => {
-    expect(async () => {
-      const user = await inMemoryUsersRepository.create({
-        email: "user@example.com",
-        password: "1234",
-        name: "User Test",
-      });
+    const user = await inMemoryUsersRepository.create({
+      email: "user@example.com",
+      password: "1234",
+      name: "User Test",
+    });
 
-      await getStatementOperationUseCase.execute({
+    await expect(getStatementOperationUseCase.execute({
         user_id: user.id as string,
         statement_id: "non-exists-statement",
-      });
-    }).rejects.toBeInstanceOf(GetStatementOperationError);
+      })).rejects.toBeInstanceOf(GetStatementOperationError.StatementNotFound);
   });
 });

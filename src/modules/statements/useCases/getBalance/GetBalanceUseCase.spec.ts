@@ -31,8 +31,7 @@ describe("Get Balance", () => {
   });
 
   it("should not be able to get a balance with a non-exists user", async () => {
-    expect(async () => {
-      await getBalanceUseCase.execute({user_id: "non-exists-user"});
-    }).rejects.toBeInstanceOf(GetBalanceError);
+    await expect(getBalanceUseCase.execute({user_id: "non-exists-user"})
+    ).rejects.toBeInstanceOf(GetBalanceError);
   });
 });
