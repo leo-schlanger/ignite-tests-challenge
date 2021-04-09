@@ -4,7 +4,7 @@ import { app } from "../../../../app";
 
 let connection: Connection;
 
-describe("Show User Profile Controller", () => {
+describe("Authenticate User Controller", () => {
   beforeAll(async () => {
     connection = await createConnection();
     await connection.runMigrations();
@@ -15,7 +15,7 @@ describe("Show User Profile Controller", () => {
     await connection.close();
   });
 
-  it("should be able to show profile", async () => {
+  it("should be able to authenticate user", async () => {
     await request(app).post("/api/v1/users").send({
       name: "Rosa Rodriquez",
       email: "fe@jakege.th",
